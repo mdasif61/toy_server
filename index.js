@@ -44,6 +44,15 @@ async function run() {
       const result=await toyCollection.findOne(query);
       res.send(result)
     })
+
+    app.get('/toyImage',async(req,res)=>{
+      const image=toyCollection.find();
+      const options={
+        projection:{picture:1}
+      };
+      const result=await toyCollection.find(image,options).toArray();
+      res.send(result)
+    })
     
     app.get('/activeCategoys/:category',async(req,res)=>{
       const activeCategoy=req.params.category;
