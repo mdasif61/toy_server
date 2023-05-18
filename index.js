@@ -33,7 +33,8 @@ async function run() {
     const toyCollection=client.db('all_toys').collection('toys');
 
     app.get('/alltoys',async(req,res)=>{
-      const getToys=await toyCollection.find().toArray();
+      const limit=parseInt(req.query.limit) || 4
+      const getToys=await toyCollection.find().limit(limit).toArray();
       res.send(getToys)
     })
 
