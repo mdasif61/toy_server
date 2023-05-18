@@ -28,7 +28,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
 
-    await client.connect();
+     client.connect();
 
     const toyCollection=client.db('all_toys').collection('toys');
 
@@ -49,6 +49,11 @@ async function run() {
         ]
       }).toArray()
       res.send(result)
+    })
+
+    app.get('/totalToy',async(req,res)=>{
+      const totalToys=await toyCollection.estimatedDocumentCount();
+      res.send({totalToy:totalToys})
     })
 
     app.get('/mytoys',async(req,res)=>{
