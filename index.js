@@ -32,6 +32,11 @@ async function run() {
 
     const toyCollection=client.db('all_toys').collection('toys');
 
+    app.get('/gellery',async(req,res)=>{
+      const result=await toyCollection.find().toArray();
+      res.send(result)
+    })
+
     app.get('/alltoys',async(req,res)=>{
       const limit=parseInt(req.query.limit) || 4
       const getToys=await toyCollection.find().limit(limit).toArray();
@@ -42,15 +47,6 @@ async function run() {
       const toyId=req.params.id;
       const query={_id:new ObjectId(toyId)};
       const result=await toyCollection.findOne(query);
-      res.send(result)
-    })
-
-    app.get('/toyImage',async(req,res)=>{
-      const image=toyCollection.find();
-      const options={
-        projection:{picture:1}
-      };
-      const result=await toyCollection.find(image,options).toArray();
       res.send(result)
     })
     
