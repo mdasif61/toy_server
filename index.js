@@ -41,7 +41,7 @@ async function run() {
     app.get('/uniqueToy/:id',async(req,res)=>{
       const toyId=req.params.id;
       const query={_id:new ObjectId(toyId)};
-      const result=await toyCollection.find(query);
+      const result=await toyCollection.findOne(query);
       res.send(result)
     })
     
