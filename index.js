@@ -32,9 +32,26 @@ async function run() {
 
     const toyCollection=client.db('all_toys').collection('toys');
 
+    app.get('/alltoys',async(req,res)=>{
+      const getToys=await toyCollection.find().toArray();
+      res.send(getToys)
+    })
+
+    app.get('/mytoys',async(req,res)=>{
+      let query={}
+      if(req.query?.email){
+        query={email:req.query.email}
+      }
+      const myToys=await toyCollection.find(query).toArray()
+      console.log(req.query)
+      res.send(myToys)
+    })
+
     app.post('/addToy',async(req,res)=>{
         const toyInfo=req.body
         console.log(toyInfo)
+        const result=await toyCollection.insertOne(toyInfo);
+        res.send(result)
     })
 
     await client.db("admin").command({ ping: 1 });
