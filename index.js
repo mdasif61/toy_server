@@ -14,7 +14,7 @@ app.get('/',(req,res)=>{
 // jyVhpcLhmhqTsNEA
 // sports_toys
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.kuomool.mongodb.net/?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, {
@@ -38,6 +38,12 @@ async function run() {
       res.send(getToys)
     })
 
+    app.get('/uniqueToy/:id',async(req,res)=>{
+      const toyId=req.params.id;
+      const query={_id:new ObjectId(toyId)};
+      const result=await toyCollection.find(query).toArray();
+      res.send(result)
+    })
     
     const key={name:1}
     const indexName={name:'toyName'}
