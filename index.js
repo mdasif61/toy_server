@@ -37,13 +37,27 @@ async function run() {
       res.send(getToys)
     })
 
+    
+    const key={name:1}
+    const indexName={name:'toyName'}
+    const result=await toyCollection.createIndex(key,indexName)
+    app.get('/searchName/:toy',async(req,res)=>{
+      const toyName=req.params.toy;
+      const result=await toyCollection.find({
+        $or:[
+          {name:{$regex:toyName, $options:'i'}}
+        ]
+      }).toArray()
+      res.send(result)
+    })
+
     app.get('/mytoys',async(req,res)=>{
       let query={}
       if(req.query?.email){
-        query={email:req.query.email}
+        query={sellerEmail:req.query.email}
       }
       const myToys=await toyCollection.find(query).toArray()
-      console.log(req.query)
+      // console.log(req.query)
       res.send(myToys)
     })
 
