@@ -45,6 +45,18 @@ async function run() {
       res.send(result)
     })
     
+    app.get('/activeCategoys/:category',async(req,res)=>{
+      const activeCategoy=req.params.category;
+      if(req.params.category==='Ball Games' || req.params.category==='Outdoor Adventures' || req.params.category==='Team Sports'){
+        const query={category:req.params.category};
+        const result=await toyCollection.find(query).toArray()
+        res.send(result)
+      }else if(req.params.category==='All'){
+        const result=await toyCollection.find().toArray()
+        res.send(result)
+      }
+    })
+
     const key={name:1}
     const indexName={name:'toyName'}
     const result=await toyCollection.createIndex(key,indexName)
