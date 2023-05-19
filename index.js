@@ -4,9 +4,7 @@ const port=process.env.PORT || 5000;
 const cors=require('cors');
 require('dotenv').config()
 
-app.use(cors({
-  origin:'*'
-}))
+app.use(cors())
 app.use(express.json());
 
 
@@ -99,6 +97,19 @@ async function run() {
         const result=await toyCollection.insertOne(toyInfo);
         res.send(result)
     });
+
+    app.put('/toyUpdate/:id',async(req,res)=>{
+      const id=req.params.id;
+      const toyInfo=req.body;
+      const filter={_id:new ObjectId(id)};
+      const updateData={
+        $set:{
+          ...toyInfo
+        }
+      };
+      const result=await toyCollection.updateOne(filter,updateData);
+      res.send(result)
+    })
 
     app.delete('/mytoys/:id',async(req,res)=>{
       const id=req.params.id;
