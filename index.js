@@ -7,6 +7,7 @@ require('dotenv').config()
 app.use(cors())
 app.use(express.json());
 
+
 app.get('/',(req,res)=>{
     res.send('Sports_Special Server Is Running')
 })
