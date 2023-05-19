@@ -104,7 +104,7 @@ async function run() {
       const filter={_id:new ObjectId(id)};
       const updateData={
         $set:{
-          ...toyInfo
+          quantity:toyInfo.quantity
         }
       };
       const result=await toyCollection.updateOne(filter,updateData);
