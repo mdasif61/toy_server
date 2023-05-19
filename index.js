@@ -23,13 +23,21 @@ const client = new MongoClient(uri, {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  }
+  },
+  useNewUrlParser:true,
+  useUnifiedTopology:true,
+  maxPoolSize:10
 });
 
 async function run() {
   try {
 
-     client.connect();
+     client.connect((err=>{
+      if(err){
+        console.error(err);
+        return;
+      }
+     }));
 
     const toyCollection=client.db('all_toys').collection('toys');
 
@@ -100,11 +108,13 @@ async function run() {
 
     app.put('/toyUpdate/:id',async(req,res)=>{
       const id=req.params.id;
+      console.log(id)
       const toyInfo=req.body;
+      console.log(toyInfo)
       const filter={_id:new ObjectId(id)};
       const updateData={
         $set:{
-          quantity:toyInfo.quantity
+          ...toyInfo
         }
       };
       const result=await toyCollection.updateOne(filter,updateData);
